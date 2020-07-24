@@ -300,6 +300,10 @@
 
     <dimen name="navigation_key_padding">0dp</dimen>
 
+    <!-- region @boringdroid -->
+    <dimen name="boring_navigation_key_width">30dp</dimen>
+    <!-- endregion -->
+
     <!-- The padding on the side of the navigation bar. Must be greater than or equal to
          navigation_extra_key_width -->
     <dimen name="navigation_side_padding">36dp</dimen>

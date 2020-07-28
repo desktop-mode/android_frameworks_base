@@ -42,7 +42,7 @@ import android.widget.LinearLayout;
 import android.widget.Space;
 
 import com.android.internal.annotations.VisibleForTesting;
-import com.android.systemui.BoringdroidConfig;
+import com.android.internal.BoringdroidManager;
 import com.android.systemui.Dependency;
 import com.android.systemui.R;
 import com.android.systemui.navigationbar.buttons.ButtonDispatcher;
@@ -167,8 +167,9 @@ public class NavigationBarInflaterView extends FrameLayout
         if (!mIsHintEnabled && defaultResource == R.string.config_navBarLayoutHandle) {
             return getContext().getString(defaultResource).replace(HOME_HANDLE, "");
         }
-         // region @boringdroid
-        if (BoringdroidConfig.IS_SYSTEMUI_PLUGIN_ENABLED) {
+
+        // region @boringdroid
+        if (BoringdroidManager.IS_SYSTEMUI_PLUGIN_ENABLED) {
             return getContext().getString(R.string.boring_config_navBarLayout);
         } else {
             return getContext().getString(defaultResource);
@@ -513,7 +514,7 @@ public class NavigationBarInflaterView extends FrameLayout
             }
         }
         // region @boringdroid
-        if (BoringdroidConfig.IS_SYSTEMUI_PLUGIN_ENABLED && v instanceof KeyButtonView) {
+        if (BoringdroidManager.IS_SYSTEMUI_PLUGIN_ENABLED && v instanceof KeyButtonView) {
             ViewGroup.LayoutParams layoutParams = v.getLayoutParams();
             layoutParams.width =
                     (int) v.getContext()

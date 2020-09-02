@@ -975,4 +975,7 @@
     <dimen name="secondary_rounded_corner_radius_adjustment">0px</dimen>
     <dimen name="secondary_rounded_corner_radius_top_adjustment">0px</dimen>
     <dimen name="secondary_rounded_corner_radius_bottom_adjustment">0px</dimen>
+    <!-- region @boringdroid -->
+    <item name="decor_corner_radius" type="dimen">8dp</item>
+    <!-- endregion -->
 </resources>

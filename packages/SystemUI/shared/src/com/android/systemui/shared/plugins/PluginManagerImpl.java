@@ -69,8 +69,8 @@ public class PluginManagerImpl extends BroadcastReceiver implements PluginManage
         mActionManagerFactory = actionManagerFactory;
         // region @boringdroid
         // We enable the plugin manager despite of the debuggable flag.
-        // isDebuggable = debuggable;
-        isDebuggable = SystemProperties.getBoolean("persist.sys.systemuiplugin.enabled", false);
+        // mIsDebuggable = debuggable;
+        mIsDebuggable = SystemProperties.getBoolean("persist.sys.systemuiplugin.enabled", false);
         // endregion
         mPrivilegedPlugins.addAll(privilegedPlugins);
         mPluginPrefs = pluginPrefs;

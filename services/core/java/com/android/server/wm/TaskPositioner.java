@@ -16,6 +16,9 @@
 
 package com.android.server.wm;
 
+import static android.app.WindowConfiguration.WINDOWING_MODE_FREEFORM;
+import static android.app.WindowConfiguration.WINDOWING_MODE_FULLSCREEN;
+import static android.app.WindowConfiguration.WINDOWING_MODE_UNDEFINED;
 import static android.app.ActivityTaskManager.RESIZE_MODE_USER;
 import static android.app.ActivityTaskManager.RESIZE_MODE_USER_FORCED;
 import static android.os.InputConstants.DEFAULT_DISPATCHING_TIMEOUT_MILLIS;
@@ -179,7 +182,10 @@ class TaskPositioner implements IBinder.DeathRecipient {
                         mService.mAtmService.resizeTask(
                                 mTask.mTaskId, mWindowDragBounds, RESIZE_MODE_USER_FORCED);
                     }
-
+                    if(newY==0)
+                    {
+                        mTask.getRootTask().setWindowingMode(WINDOWING_MODE_FULLSCREEN);
+                    }
                     // Post back to WM to handle clean-ups. We still need the input
                     // event handler for the last finishInputEvent()!
                     mService.mTaskPositioningController.finishTaskPositioning();
@@ -330,6 +336,11 @@ class TaskPositioner implements IBinder.DeathRecipient {
         // Use the bounds of the task which accounts for
         // multiple app windows. Don't use any bounds from win itself as it
         // may not be the same size as the task.
+        if (!mTask.getRootTask().inFreeformWindowingMode())
+        {
+            mTask.getRootTask().setWindowingMode(WINDOWING_MODE_UNDEFINED);
+            mResizing=false;
+        }
         final Rect startBounds = mTmpRect;
         mTask.getBounds(startBounds);
 

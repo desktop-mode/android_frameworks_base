@@ -2183,7 +2183,9 @@ public class DecorView extends FrameLayout implements RootViewSurfaceTaker, Wind
             final LayoutInflater inflater = mWindow.getLayoutInflater();
             mDecorCaptionView = createDecorCaptionView(inflater);
             // region @boringdroid
-            updateWindowCorner();
+            if(getResources().getConfiguration().windowConfiguration.getWindowingMode() != WindowConfiguration.WINDOWING_MODE_FULLSCREEN){
+                updateWindowCorner();
+            }
             // endregion
             if (mDecorCaptionView != null) {
                 if (mDecorCaptionView.getParent() == null) {
@@ -2212,7 +2214,9 @@ public class DecorView extends FrameLayout implements RootViewSurfaceTaker, Wind
 
         mDecorCaptionView = createDecorCaptionView(inflater);
         // region @boringdroid
-        updateWindowCorner();
+        if(getResources().getConfiguration().windowConfiguration.getWindowingMode() != WindowConfiguration.WINDOWING_MODE_FULLSCREEN){
+            updateWindowCorner();
+        }
         // endregion
         final View root = inflater.inflate(layoutResource, null);
         if (mDecorCaptionView != null) {

@@ -93,6 +93,7 @@ class TaskPositioner implements IBinder.DeathRecipient {
     private final Point mMaxVisibleSize = new Point();
     private float mStartDragX;
     private float mStartDragY;
+    private boolean minimizebydrag = false;
     @CtrlType
     private int mCtrlType = CTRL_NONE;
     @VisibleForTesting
@@ -140,10 +141,14 @@ class TaskPositioner implements IBinder.DeathRecipient {
 
                     case MotionEvent.ACTION_MOVE: {
                         if (DEBUG_TASK_POSITIONING){
-                            Slog.w(TAG, "ACTION_MOVE @ {" + newX + ", " + newY + "}");
+                            Slog.w(TAG, "ACTION_MOVE @ {" + newX + ", " + newY + "}" + " resizebydrag: " + minimizebydrag);
                         }
                         synchronized (mService.mGlobalLock) {
-                            mDragEnded = notifyMoveLocked(newX, newY);
+                            if (minimizebydrag) {
+                               mWindowDragBounds.offsetTo((int)newX - (mWindowOriginalBounds.width()/2), (int)newY);
+                            } else {
+                                mDragEnded = notifyMoveLocked(newX, newY);
+                            }
                             mTask.getDimBounds(mTmpRect);
                         }
                         if (!mTmpRect.equals(mWindowDragBounds)) {
@@ -328,6 +333,7 @@ class TaskPositioner implements IBinder.DeathRecipient {
      * {@link TaskPositioningController#startPositioningLocked} or unit tests.
      */
     void startDrag(boolean resize, boolean preserveOrientation, float startX, float startY) {
+        minimizebydrag=false;
         if (DEBUG_TASK_POSITIONING) {
             Slog.d(TAG, "startDrag: win=" + mWindow + ", resize=" + resize
                     + ", preserveOrientation=" + preserveOrientation + ", {" + startX + ", "
@@ -339,7 +345,7 @@ class TaskPositioner implements IBinder.DeathRecipient {
         if (!mTask.getRootTask().inFreeformWindowingMode())
         {
             mTask.getRootTask().setWindowingMode(WINDOWING_MODE_UNDEFINED);
-            mResizing=false;
+            minimizebydrag=true;
         }
         final Rect startBounds = mTmpRect;
         mTask.getBounds(startBounds);
